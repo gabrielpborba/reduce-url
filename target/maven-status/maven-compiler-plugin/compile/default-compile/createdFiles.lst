@@ -1,1 +1,7 @@
+com/reduceurl/model/Url.class
+com/reduceurl/dao/UrlRepository.class
 com/reduceurl/ReduceurlApplication.class
+com/reduceurl/controller/ReduceUrlController.class
+com/reduceurl/service/UrlService.class
+com/reduceurl/json/UrlJson.class
+com/reduceurl/config/MongoConfig.class

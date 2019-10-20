@@ -25,9 +25,15 @@ public class UrlService {
 
 
         //colocar na fila
-       // urlRepository.save(newUrl);
+        urlRepository.save(newUrl);
 
         return shortUrl;
 
+    }
+
+    public String getFullUrlByid(String id){
+        Url url = urlRepository.findByShortUrl(id);
+
+        return url.getFullUrl();
     }
 }

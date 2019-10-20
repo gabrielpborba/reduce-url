@@ -1,0 +1,21 @@
+mongo:
+  image: mongo
+  restart: always
+  volumes:
+    - database:/data/db
+  ports:
+    - "27017:27017"
+
+rabbitmq:
+  image: rabbitmq:management
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+
+app:
+  build:  .
+  dockerfile: docker/Dockerfile
+  ports:
+    - "8080:8080"
+  links:
+    - mongo
