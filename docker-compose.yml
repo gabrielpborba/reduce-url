@@ -7,10 +7,11 @@ mongo:
     - "27017:27017"
 
 rabbitmq:
-  image: rabbitmq:management
+  container_name: reduceurl_rabbitmq_1
+  image: rabbitmq:3-management
   ports:
-    - "5672:5672"
-    - "15672:15672"
+    - 5672:5672
+    - 15672:15672
 
 app:
   build:  .
