@@ -11,6 +11,6 @@ public class MongoConfig extends AbstractMongoConfiguration {
     protected String getDatabaseName(){return "reduceurldb";}
 
     @Override
-    public MongoClient mongoClient(){return new MongoClient("mongo", 27017);}
+    public MongoClient mongoClient(){return new MongoClient("mongo-container", 27017);}
 
 }
