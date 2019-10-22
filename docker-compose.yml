@@ -1,22 +1,34 @@
-mongo:
-  image: mongo
-  restart: always
-  volumes:
-    - database:/data/db
-  ports:
-    - "27017:27017"
-
-rabbitmq:
-  container_name: reduceurl_rabbitmq_1
-  image: rabbitmq:3-management
-  ports:
-    - 5672:5672
-    - 15672:15672
-
-app:
-  build:  .
-  dockerfile: docker/Dockerfile
-  ports:
-    - "8080:8080"
-  links:
-    - mongo
+version:  "3.3"
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  rabbitmq:
+    container_name: reduceurl_rabbitmq_1
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  api:
+    build:
+      context: "./shorturl/"
+      dockerfile: Dockerfile
+    container_name: api-container
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+      - rabbitmq
+      - consumer
+  consumer:
+      build:
+        context: "./consumer"
+        dockerfile: Dockerfile
+      container_name: consumer-container
+      ports:
+        - "9090:9090"
