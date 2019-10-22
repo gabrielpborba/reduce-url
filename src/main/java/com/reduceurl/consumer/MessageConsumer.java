@@ -9,7 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class MessageConsumer {
 
   static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
@@ -17,12 +17,11 @@ public class MessageConsumer {
   @Autowired
   private UrlRepository urlRepository;
 
-  //@RabbitListener(queues = RabbitConfig.QUEUE_URL)
+  @RabbitListener(queues = RabbitConfig.QUEUE_URL)
   public void processOrder(Url url) {
     logger.info("URL RECEIVED: SHORT URL: " + url.getShortUrl() + "   FULL URL: " + url.getFullUrl());
 
     Url urlReturned = urlRepository.save(url);
-    logger.info("URL RETURNED FROM MONGO:", urlReturned.toString());
 
   }
 }

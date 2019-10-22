@@ -12,11 +12,6 @@ rabbitmq:
   ports:
     - 5672:5672
     - 15672:15672
-  command: sh -c "rabbitmq-plugins enable rabbitmq_management; rabbitmq-server"
-  volumes:
-    - ./docker/queue/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
-    - ./docker/queue/definitions.json:/etc/rabbitmq/definitions.json:ro
-
 
 app:
   build:  .
