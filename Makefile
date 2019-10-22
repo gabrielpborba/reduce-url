@@ -1,2 +1,3 @@
 run:
-	docker-compose -up --build
+	./mvnw clean package -B
+	docker-compose up --build

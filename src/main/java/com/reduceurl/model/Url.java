@@ -28,4 +28,9 @@ public class Url {
     public void setFullUrl(String fullUrl) {
         this.fullUrl = fullUrl;
     }
+
+    public Url(String shortUrl, String fullUrl) {
+        this.shortUrl = shortUrl;
+        this.fullUrl = fullUrl;
+    }
 }

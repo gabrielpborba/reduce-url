@@ -58,7 +58,7 @@ public class UrlService {
 
     }
 
-    public String getFullUrlByid(String id){
+    public String getFullUrlById(String id){
         Url url = urlRepository.findByShortUrl(id);
 
         return url.getFullUrl();

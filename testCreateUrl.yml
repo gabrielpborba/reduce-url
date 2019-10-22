@@ -1,0 +1,13 @@
+config:
+  target: "http://localhost:8080/"
+  phases:
+    - duration: 20
+      arrivalRate: 5000
+scenarios:
+  - flow:
+      - get:
+          url: "/"
+      - post:
+          url: "/reduce"
+          json:
+            url: "https://globo.com/"
