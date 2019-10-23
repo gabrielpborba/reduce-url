@@ -12,16 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.nio.charset.Charset;
 import java.util.Date;
 
 @Service
 public class UrlService {
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @Autowired
     private UrlRepository urlRepository;

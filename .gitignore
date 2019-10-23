@@ -39,3 +39,4 @@ buildSrc/build
 /integration-tests/build
 /src/asciidoc/build
 target/
+data/
