@@ -41,8 +41,9 @@ public class ReduceUrlController {
 
     }
 
-    @RequestMapping("/findByFullUrl/{fullUrl}")
-    public ResponseEntity<Object> findByFullUrl(@PathVariable String fullUrl){
+    @RequestMapping("/findByFullUrl")
+    public ResponseEntity<Object> findByFullUrl(@RequestParam String fullUrl){
+        System.out.println(fullUrl);
         String url = urlService.getShortUrlByFullUrl(fullUrl);
         return new ResponseEntity<Object>(url, HttpStatus.OK);
     }
