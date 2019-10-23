@@ -19,11 +19,12 @@ public class Consumer {
   private UrlRepository urlRepository;
 
   @RabbitListener(queues = RabbitConfig.QUEUE_URL)
-  public void processOrder(Url url) {
+  public void saveUrl(Url url) {
     logger.info("URL RECEIVED: SHORT URL: " + url.getShortUrl() + "   FULL URL: " + url.getFullUrl());
 
     Url urlReturned = urlRepository.save(url);
-    logger.info("URL SAVED :)");
+    logger.info("URL SAVE :)");
 
   }
+
 }

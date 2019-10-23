@@ -2,6 +2,7 @@ package com.shorturl.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.hash.Hashing;
+import com.mongodb.BasicDBObject;
 import com.shorturl.config.RabbitConfig;
 import com.shorturl.consumer.MessageConsumer;
 import com.shorturl.dao.UrlRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
+import java.util.Date;
 
 @Service
 public class UrlService {
@@ -36,7 +38,9 @@ public class UrlService {
 
     public String createShortUrl(String url){
         String shortUrl = Hashing.murmur3_32().hashString(url, Charset.defaultCharset()).toString();
+        Date now = new Date();
 
+        BasicDBObject timeNow = new BasicDBObject("date", now);
         Url newUrl = new Url();
         newUrl.setFullUrl(url);
         newUrl.setShortUrl(shortUrl);
@@ -53,7 +57,6 @@ public class UrlService {
 
     public String getFullUrlById(String id){
         Url url = urlRepository.findByShortUrl(id);
-
         return url.getFullUrl();
     }
 }
