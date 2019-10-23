@@ -19,6 +19,9 @@ You need Docker in your pc :)
 
 Execute this command in the project`s root folder:
 ```bash
+
+mvn clean install -f ./consumer
+mvn clean install -f ./shorturl
 docker-compose up --build
 
 ```
