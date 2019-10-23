@@ -15,6 +15,7 @@ services:
       - "5672:5672"
       - "15672:15672"
   api:
+    image: shorturl
     build:
       context: "./shorturl/"
       dockerfile: Dockerfile
@@ -26,9 +27,10 @@ services:
       - rabbitmq
       - consumer
   consumer:
-      build:
-        context: "./consumer"
-        dockerfile: Dockerfile
-      container_name: consumer-container
-      ports:
-        - "9090:9090"
+    image: consumer
+    build:
+      context: "./consumer"
+      dockerfile: Dockerfile
+    container_name: consumer-container
+    ports:
+      - "9090:9090"

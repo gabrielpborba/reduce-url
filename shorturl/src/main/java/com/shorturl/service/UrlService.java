@@ -38,9 +38,7 @@ public class UrlService {
 
     public String createShortUrl(String url){
         String shortUrl = Hashing.murmur3_32().hashString(url, Charset.defaultCharset()).toString();
-        Date now = new Date();
 
-        BasicDBObject timeNow = new BasicDBObject("date", now);
         Url newUrl = new Url();
         newUrl.setFullUrl(url);
         newUrl.setShortUrl(shortUrl);
@@ -55,8 +53,13 @@ public class UrlService {
 
     }
 
-    public String getFullUrlById(String id){
+    public String getFullUrlByShortUrk(String id){
         Url url = urlRepository.findByShortUrl(id);
         return url.getFullUrl();
+    }
+
+    public String getShortUrlByFullUrl(String fullUrl){
+        Url url = urlRepository.findByFullUrl(fullUrl);
+        return url.getShortUrl();
     }
 }

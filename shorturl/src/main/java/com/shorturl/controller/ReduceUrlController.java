@@ -32,7 +32,7 @@ public class ReduceUrlController {
 
     @RequestMapping("/redirect/{url}")
     public void  redirect(@PathVariable String url,  HttpServletResponse httpServletResponse) throws IOException {
-        String fullUrl = urlService.getFullUrlById(url);
+        String fullUrl = urlService.getFullUrlByShortUrk(url);
         String newURL = httpServletResponse.encodeRedirectURL(fullUrl);
         httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         httpServletResponse.setHeader("Location", newURL);
@@ -41,12 +41,14 @@ public class ReduceUrlController {
 
     @RequestMapping("/findByFullUrl/{fullUrl}")
     public ResponseEntity<Object> findByFullUrl(@PathVariable String fullUrl){
-        return new ResponseEntity<Object>(urlRepository.findByFullUrl(fullUrl), HttpStatus.OK);
+        String url = urlService.getShortUrlByFullUrl(fullUrl);
+        return new ResponseEntity<Object>(url, HttpStatus.OK);
     }
 
     @RequestMapping("/findByShortUrl/{shortUrl}")
     public ResponseEntity<Object> findByShortUrl(@PathVariable String shortUrl){
-        return new ResponseEntity<Object>(urlRepository.findByShortUrl(shortUrl), HttpStatus.OK);
+        String url = urlService.getFullUrlByShortUrk(shortUrl);
+        return new ResponseEntity<Object>(url, HttpStatus.OK);
     }
 
     @RequestMapping("/findAll")
