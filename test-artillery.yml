@@ -1,0 +1,11 @@
+config:
+  target: "http://localhost:8080"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+scenarios:
+  - flow:
+      - post:
+          url: "/reduce"
+          json:
+            url: "https://www.google.com/search?client=ubuntu&chaannel=fs&q=how+identify+host+of+rabbitmq&ie=utf-8&oe=utf-8"

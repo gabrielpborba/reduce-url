@@ -5,6 +5,7 @@ import com.shorturl.json.UrlJson;
 import com.shorturl.model.Url;
 import com.shorturl.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,13 @@ public class ReduceUrlController {
     @Autowired
     private UrlRepository urlRepository;
 
+    @Value("${reduce.url}")
+    private String host;
+
     @PostMapping("/reduce")
     @ResponseBody
     public String reduce(@RequestBody UrlJson urlJson){
-      //colocar host em variavel externa
-      return "http://localhost:8080/redirect/" + urlService.createShortUrl(urlJson.getUrl());
-
+      return host + "/redirect/" + urlService.createShortUrl(urlJson.getUrl());
     }
 
     @RequestMapping("/redirect/{url}")
