@@ -22,8 +22,13 @@ public class Consumer {
   public void saveUrl(Url url) {
     logger.info("URL RECEIVED: SHORT URL: " + url.getShortUrl() + "   FULL URL: " + url.getFullUrl());
 
-    Url urlReturned = urlRepository.save(url);
-    logger.info("URL SAVE :)");
+    try {
+      urlRepository.save(url);
+    }catch (Exception e){
+      logger.error("Error trying to save the URL  {}", url.getFullUrl());
+    }
+
+    logger.info("successfully inserted url :)");
 
   }
 

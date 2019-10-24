@@ -2,10 +2,8 @@ package com.shorturl.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.hash.Hashing;
-import com.mongodb.BasicDBObject;
 import com.shorturl.config.RabbitConfig;
-import com.shorturl.consumer.MessageConsumer;
-import com.shorturl.dao.UrlRepository;
+import com.shorturl.dao.ShortUrlRepository;
 import com.shorturl.model.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,23 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
-import java.util.Date;
+import java.util.List;
 
 @Service
-public class UrlService {
+public class ShortUrlService {
 
     @Autowired
-    private UrlRepository urlRepository;
+    private ShortUrlRepository urlRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     private final RabbitTemplate rabbitTemplate;
 
-    static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
+    static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
 
     @Autowired
-    public UrlService(RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
+    public ShortUrlService(RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
         this.rabbitTemplate = rabbitTemplate;
         this.objectMapper = objectMapper;
     }
@@ -53,7 +51,7 @@ public class UrlService {
 
     }
 
-    public String getFullUrlByShortUrk(String id){
+    public String getFullUrlByShortUrl(String id){
         Url url = urlRepository.findByShortUrl(id);
         return url.getFullUrl();
     }
@@ -61,5 +59,23 @@ public class UrlService {
     public String getShortUrlByFullUrl(String fullUrl){
         Url url = urlRepository.findByFullUrl(fullUrl);
         return url.getShortUrl();
+    }
+
+    public void deleteUrl(String url){
+        try {
+            urlRepository.deleteById(url);
+            logger.info("URL DELETED: {}", url);
+        }catch (Exception e){
+            logger.error("Error trying to delete an url {}", url);
+
+        }
+    }
+
+    public void deleteAll(){
+        urlRepository.deleteAll();
+    }
+
+    public List<Url> findAll(){
+        return urlRepository.findAll();
     }
 }

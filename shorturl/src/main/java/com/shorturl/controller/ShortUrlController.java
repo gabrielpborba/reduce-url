@@ -1,9 +1,9 @@
 package com.shorturl.controller;
 
-import com.shorturl.dao.UrlRepository;
+import com.shorturl.dao.ShortUrlRepository;
 import com.shorturl.json.UrlJson;
 import com.shorturl.model.Url;
-import com.shorturl.service.UrlService;
+import com.shorturl.service.ShortUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-public class ReduceUrlController {
+public class ShortUrlController {
 
     @Autowired
-    private UrlService urlService;
+    private ShortUrlService shortUrlService;
 
     @Autowired
-    private UrlRepository urlRepository;
+    private ShortUrlRepository shortUrlRepository;
 
     @Value("${reduce.url}")
     private String host;
@@ -29,12 +29,12 @@ public class ReduceUrlController {
     @PostMapping("/reduce")
     @ResponseBody
     public String reduce(@RequestBody UrlJson urlJson){
-      return host + "/redirect/" + urlService.createShortUrl(urlJson.getUrl());
+      return host + "/redirect/" + shortUrlService.createShortUrl(urlJson.getUrl());
     }
 
     @RequestMapping("/redirect/{url}")
     public void  redirect(@PathVariable String url,  HttpServletResponse httpServletResponse) throws IOException {
-        String fullUrl = urlService.getFullUrlByShortUrk(url);
+        String fullUrl = shortUrlService.getFullUrlByShortUrl(url);
         String newURL = httpServletResponse.encodeRedirectURL(fullUrl);
         httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         httpServletResponse.setHeader("Location", newURL);
@@ -43,35 +43,33 @@ public class ReduceUrlController {
 
     @RequestMapping("/findByFullUrl")
     public ResponseEntity<Object> findByFullUrl(@RequestParam String fullUrl){
-        System.out.println(fullUrl);
-        String url = urlService.getShortUrlByFullUrl(fullUrl);
+        String url = shortUrlService.getShortUrlByFullUrl(fullUrl);
         return new ResponseEntity<Object>(url, HttpStatus.OK);
     }
 
     @RequestMapping("/findByShortUrl/{shortUrl}")
     public ResponseEntity<Object> findByShortUrl(@PathVariable String shortUrl){
-        String url = urlService.getFullUrlByShortUrk(shortUrl);
+        String url = shortUrlService.getFullUrlByShortUrl(shortUrl);
         return new ResponseEntity<Object>(url, HttpStatus.OK);
     }
 
     @RequestMapping("/findAll")
     public @ResponseBody
-    ResponseEntity<Object> findAll()  {
-       List<Url> list =  urlRepository.findAll();
-        return new ResponseEntity<Object>(list, HttpStatus.OK);
-
+    ResponseEntity<List<Url>> findAll()  {
+       List<Url> list =  shortUrlService.findAll();
+       return new ResponseEntity<List<Url>>(list, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAll")
     public HttpStatus deleteAll(){
-        urlRepository.deleteAll();
+        shortUrlService.deleteAll();
         return HttpStatus.OK;
     }
 
     @DeleteMapping("/delete/{shortUrl}")
-    public ResponseEntity deleteUrl(@PathVariable String shortUrl) {
-       urlRepository.deleteById(shortUrl);
-       return new ResponseEntity<>(shortUrl, HttpStatus.OK);
+    public HttpStatus deleteUrl(@PathVariable String shortUrl) {
+       shortUrlService.deleteUrl(shortUrl);
+        return HttpStatus.OK;
     }
 
 }
